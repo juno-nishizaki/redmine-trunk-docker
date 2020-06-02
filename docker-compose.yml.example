@@ -1,0 +1,34 @@
+version: "3.7"
+
+services:
+
+  redmine:
+    build: .
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    environment:
+      REDMINE_DB_POSTGRES: db
+      REDMINE_DB_DATABASE: redminedb
+      REDMINE_DB_USERNAME: redmineuser
+      REDMINE_DB_PASSWORD: redminepassword
+    volumes:
+      - "redmine-files:/usr/src/redmine/files"
+      - "redmine-log:/usr/src/redmine/log"
+
+  db:
+    image: postgres:12
+    restart: always
+    environment:
+      POSTGRES_DB: redminedb
+      POSTGRES_USER: redmineuser
+      POSTGRES_PASSWORD: redminepassword
+    volumes:
+      - "dbdata:/var/lib/postgresql/data"
+
+volumes:
+  redmine-files:
+  redmine-log:
+  dbdata:

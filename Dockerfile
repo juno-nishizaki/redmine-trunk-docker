@@ -1,4 +1,4 @@
-FROM ruby:%%RUBY_VERSION%%-slim-buster
+FROM ruby:2.6-slim-buster
 
 # explicitly set uid/gid to guarantee that it won't change in the future
 # the values 999:999 are identical to the current user/group id assigned
@@ -78,14 +78,9 @@ RUN set -eux; \
 	chown redmine:redmine "$HOME"; \
 	chmod 1777 "$HOME"
 
-ENV REDMINE_VERSION %%REDMINE_VERSION%%
-ENV REDMINE_DOWNLOAD_MD5 %%REDMINE_DOWNLOAD_MD5%%
-
 RUN set -eux; \
-	wget -O redmine.tar.gz "https://www.redmine.org/releases/redmine-${REDMINE_VERSION}.tar.gz"; \
-	echo "$REDMINE_DOWNLOAD_MD5 *redmine.tar.gz" | md5sum -c -; \
-	tar -xf redmine.tar.gz --strip-components=1; \
-	rm redmine.tar.gz files/delete.me log/delete.me; \
+	svn co https://svn.redmine.org/redmine/trunk .; \
+	rm files/delete.me log/delete.me; \
 	mkdir -p log public/plugin_assets sqlite tmp/pdf tmp/pids; \
 	chown -R redmine:redmine ./; \
 # log to STDOUT (https://github.com/docker-library/redmine/issues/108)
