@@ -3,7 +3,7 @@ version: "3.7"
 services:
 
   redmine:
-    build: .
+    image: junonishizaki/redmine-trunk:passenger
     restart: always
     depends_on:
       - db
