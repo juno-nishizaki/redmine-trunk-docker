@@ -1,6 +1,6 @@
 FROM junonishizaki/redmine-trunk:latest
 
-ENV PASSENGER_VERSION 6.0.5
+ENV PASSENGER_VERSION 6.0.6
 
 RUN set -eux; \
 	\
